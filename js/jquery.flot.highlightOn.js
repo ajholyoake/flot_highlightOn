@@ -20,12 +20,15 @@
     plot.hooks.bindEvents.push(function(plot, eventHolder){
 
     $( plot.getPlaceholder() ).bind("plothover", function(event, pos, item){
+    //Ah-hah! what about $(placeholer).data("plot"), can do more things then
 
     for (var ii = 0; ii < highlightedSeries.length; ii++){
         var series = highlightedSeries[ii];
         var olc = $(series.highlightOn.placeholder).find('canvas.flot-overlay');
         ctxolc = olc[0].getContext('2d');
+        ctxolc.save();
         ctxolc.clearRect(0,0,olc.width(),olc.height());
+        ctxolc.restore();
         }
 
 
@@ -35,32 +38,16 @@
         ctxolc = olc[0].getContext('2d');
         if(series.highlightOn.lines){
         $.extend(true,series.lines,series.highlightOn.lines)};
+        if(series.highlightOn.shadowSize){
+        series.shadowSize = series.highlightOn.shadowSize};
+        if(series.highlightOn.points){
+        $.extend(true,series.points,series.highlightOn.points);}
         plot.drawSeries(series,ctxolc);
         
-
     } 
     });
     });
     
-
-
-    //plot.hooks.drawOverlay.push(
-    //function(plot,ctx){
-    //    for(ii = 0; ii < highlightedSeries.length; ii++){
-    //    var series = highlightedSeries[ii];
-    //        var olc = $(series.highlightOn.placeholder).find('canvas.flot-overlay');
-    //        ctxolc = olc[0].getContext('2d');
-    //        ctxolc.clearRect(0,0,olc.width(),olc.height());
-    //        series.shadowSize = highlightedSeries[ii].highlightOn.shadowSize;
-    //        plot.drawSeries(series,ctxolc);
-    //    }
-    
-
-
-    //});
-
-
-
   }//End init (plugin body)
 
 
